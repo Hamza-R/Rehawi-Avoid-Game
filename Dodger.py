@@ -9,9 +9,8 @@ BackgroundColour = (255, 255, 255)
 pygame.init()
 
 #Setting width and height of screen
-ScreenWidth = (700)
-ScreenHeight = (500)
-screen = pygame.display.set_mode(ScreenWidth, ScreenHeight)
+Size = (700, 500)
+screen = pygame.display.set_mode(Size)
 
 FPS = 30
 
@@ -25,5 +24,40 @@ done = False
 #Manage speed of screen updates
 clock = pygame.time.Clock()
 
+#Setting up of constants
+
+enemyminsize = 10
+enemyminsize = 40
+enemyminspeed = 1
+enemymaxspeed = 8
+enemyspawnrate = 6
+
+playerx_speed = 0
+playery_speed = 0
+
+
+
+def move(self):
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerx_speed = -3
+            if event.key == pygame.K_RIGHT:
+                playerx_speed = 3
+            if event.ket == pygame.K_UP:
+                playery_speed = 3
+            if event.key == pygame.K_DOWN:
+                playery_speed = -3
+
+            
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                playerx_speed=0
+            if event.key == pygame.K_RIGHT:
+                playerx_speed=0
+            if event.key == pygame.K_UP:
+                playery_speed = 0
+            if event.key == pygame.K_DOWN:
+                playery_speed = 0
 
                                  
