@@ -34,33 +34,37 @@ enemyspawnrate = 6
 
 powerupspawnrate = 0
 
-playerx_speed = 0
-playery_speed = 0
+##playerx_speed = 0
+##playery_speed = 0
+
+x_coord = 350
+y_coord = 490
 
 
 
-def move(self):
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                playerx_speed = -3
-            if event.key == pygame.K_RIGHT:
-                playerx_speed = 3
-            if event.ket == pygame.K_UP:
-                playery_speed = 3
-            if event.key == pygame.K_DOWN:
-                playery_speed = -3
-
-            
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                playerx_speed=0
-            if event.key == pygame.K_RIGHT:
-                playerx_speed=0
-            if event.key == pygame.K_UP:
-                playery_speed = 0
-            if event.key == pygame.K_DOWN:
-                playery_speed = 0         
+##def move(self):
+##
+##        if event.type == pygame.KEYDOWN:
+##            if event.key == pygame.K_LEFT:
+##                x_coord = x_coord - 3
+##            if event.key == pygame.K_RIGHT:
+##                x_coord = x_coord + 3
+##            if event.ket == pygame.K_UP:
+##                y_coord = y_coord - 5
+##            if event.key == pygame.K_DOWN:
+##                y_coord = y_coord + 5
+##
+##            
+##        if event.type == pygame.KEYUP:
+##            if event.key == pygame.K_LEFT:
+##                x_coord = x_coord + 0
+##            if event.key == pygame.K_RIGHT:
+##                x_coord = x_coord + 0
+##            if event.key == pygame.K_UP:
+##                y_coord = y_coord + 0
+##            if event.key == pygame.K_DOWN:
+##                y_coord = y_coord + 0        
 
 # -------- Main Program Loop -----------
 while not done:
@@ -68,7 +72,28 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
- 
+
+        if event.type == pygame.KEYDOWN:
+            if (event.key == pygame.K_LEFT):
+                x_coord = x_coord - 3
+            if (event.key == pygame.K_RIGHT):
+                x_coord = x_coord + 3
+            if (event.key == pygame.K_UP):
+                y_coord = y_coord - 5
+            if (event.key == pygame.K_DOWN):
+                y_coord = y_coord + 5
+
+            
+        if event.type == pygame.KEYUP:
+            if (event.key == pygame.K_LEFT):
+                x_coord = x_coord + 0
+            if (event.key == pygame.K_RIGHT):
+                x_coord = x_coord + 0
+            if (event.key == pygame.K_UP):
+                y_coord = y_coord + 0
+            if (event.key == pygame.K_DOWN):
+                y_coord = y_coord + 0        
+
     # --- Game logic should go here
  
     # --- Screen-clearing code goes here
@@ -81,7 +106,7 @@ while not done:
     screen.fill(WHITE)
  
     # --- Drawing code should go here
-     
+    pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
