@@ -1,5 +1,7 @@
 import pygame 
 from pygame.locals import *
+import random
+import math
 
 #Defining some colours
 BLACK = (0, 0, 0)
@@ -40,31 +42,25 @@ powerupspawnrate = 0
 x_coord = 350
 y_coord = 490
 
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, color, width, height):
+        super().__init__()
+        self.image = pygame.Surface([width,height])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.rectx = random.randrange(0, 600)
+        self.rect.y = random.randrange(0, 400)
 
+enemy_group = pygame.sprite.Group()
+#List of all sprites
+all_sprites_group = pygame.sprite.Group()
 
+enemynumber = 25
+for x in range (enemynumber):
+    my_enemy = Enemy(BLACK, 10, 10)
+    enemy_group.add(my_enemy)
+    all_sprites_group.add (my_enemy)
 
-##def move(self):
-##
-##        if event.type == pygame.KEYDOWN:
-##            if event.key == pygame.K_LEFT:
-##                x_coord = x_coord - 3
-##            if event.key == pygame.K_RIGHT:
-##                x_coord = x_coord + 3
-##            if event.ket == pygame.K_UP:
-##                y_coord = y_coord - 5
-##            if event.key == pygame.K_DOWN:
-##                y_coord = y_coord + 5
-##
-##            
-##        if event.type == pygame.KEYUP:
-##            if event.key == pygame.K_LEFT:
-##                x_coord = x_coord + 0
-##            if event.key == pygame.K_RIGHT:
-##                x_coord = x_coord + 0
-##            if event.key == pygame.K_UP:
-##                y_coord = y_coord + 0
-##            if event.key == pygame.K_DOWN:
-##                y_coord = y_coord + 0        
 
 # -------- Main Program Loop -----------
 while not done:
@@ -107,10 +103,11 @@ while not done:
  
     # --- Drawing code should go here
     pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
+    all_sprites_group.draw(screen)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
-    # --- Limit to 60 frames per second
+    # --- Limit to 60 frames per second 
     clock.tick(60)
  
 # Close the window and quit.
