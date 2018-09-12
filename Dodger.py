@@ -4,7 +4,7 @@ from pygame.locals import *
 #Defining some colours
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-BackgroundColour = (255, 255, 255)
+
 
 pygame.init()
 
@@ -32,6 +32,8 @@ enemyminspeed = 1
 enemymaxspeed = 8
 enemyspawnrate = 6
 
+powerupspawnrate = 0
+
 playerx_speed = 0
 playery_speed = 0
 
@@ -58,6 +60,33 @@ def move(self):
             if event.key == pygame.K_UP:
                 playery_speed = 0
             if event.key == pygame.K_DOWN:
-                playery_speed = 0
+                playery_speed = 0         
 
-                                 
+# -------- Main Program Loop -----------
+while not done:
+    # --- Main event loop
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+ 
+    # --- Game logic should go here
+ 
+    # --- Screen-clearing code goes here
+ 
+    # Here, we clear the screen to white. Don't put other drawing commands
+    # above this, or they will be erased with this command.
+ 
+    # If you want a background image, replace this clear with blit'ing the
+    # background image.
+    screen.fill(WHITE)
+ 
+    # --- Drawing code should go here
+     
+    # --- Go ahead and update the screen with what we've drawn.
+    pygame.display.flip()
+ 
+    # --- Limit to 60 frames per second
+    clock.tick(60)
+ 
+# Close the window and quit.
+pygame.quit()
