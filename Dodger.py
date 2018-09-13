@@ -43,12 +43,13 @@ x_coord = 350
 y_coord = 490
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, color, width, height):
+    def __init__(self, color, width, height, speed):
         super().__init__()
+        self.speed = speed
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
         self.rect = self.image.get_rect()
-        self.rectx = random.randrange(0, 600)
+        self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
 
 enemy_group = pygame.sprite.Group()
@@ -57,9 +58,13 @@ all_sprites_group = pygame.sprite.Group()
 
 enemynumber = 25
 for x in range (enemynumber):
-    my_enemy = Enemy(BLACK, 10, 10)
+    my_enemy = Enemy(BLACK, 10, 10, 5)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
+
+
+def update(self):
+    self.rect.y = self.rect.y + self.speed
 
 
 # -------- Main Program Loop -----------
@@ -91,7 +96,7 @@ while not done:
                 y_coord = y_coord + 0        
 
     # --- Game logic should go here
- 
+    all_sprites_group.update()
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
