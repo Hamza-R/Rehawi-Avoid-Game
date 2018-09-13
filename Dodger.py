@@ -117,3 +117,31 @@ while not done:
  
 # Close the window and quit.
 pygame.quit()
+
+##playerx_speed = 0
+##playery_speed = 0
+##
+##
+##
+##def move(self):
+##
+##        if event.type == pygame.KEYDOWN:
+##            if event.key == pygame.K_LEFT:
+##                playerx_speed = -3
+##            if event.key == pygame.K_RIGHT:
+##                playerx_speed = 3
+##            if event.ket == pygame.K_UP:
+##                playery_speed = 3
+##            if event.key == pygame.K_DOWN:
+##                playery_speed = -3
+##
+##            
+##        if event.type == pygame.KEYUP:
+##            if event.key == pygame.K_LEFT:
+##                playerx_speed=0
+##            if event.key == pygame.K_RIGHT:
+##                playerx_speed=0
+##            if event.key == pygame.K_UP:
+##                playery_speed = 0
+##            if event.key == pygame.K_DOWN:
+##                playery_speed = 0 
