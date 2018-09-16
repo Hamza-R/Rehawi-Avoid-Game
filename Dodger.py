@@ -6,7 +6,8 @@ import math
 #Defining some colours
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
 
 pygame.init()
 
@@ -41,6 +42,9 @@ clock = pygame.time.Clock()
 
 x_coord = 350
 y_coord = 490
+
+x_speed = 0
+y_speed = 0
 
 
 
@@ -89,10 +93,15 @@ class Evader(pygame.sprite.Sprite):
     def update(self):
         if self.rect.x < 0:
             self.rect.x = 0
+        if self.rect.y < 0:
+            self.rect.y = 0
         elif self.rect.x > 690:
             self.rect.x = 690
+        elif self.rect.y > 490:
+            self.rect.y = 490
         else:
             self.rect.x = self.rect.x + x_speed
+            self.rect.y = self.rect.y + y_speed
     
 enemy_group = pygame.sprite.Group()
 #List of all sprites
@@ -104,10 +113,13 @@ for x in range (enemynumber):
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
-##
+my_evader = Evader(RED, 10, 10)
+all_sprites_group.add (my_evader)
+
+
 ##def update(self):
 ##    self.rect.y = self.rect.y + self.speed
-##
+
 
 # -------- Main Program Loop -----------
 while not done:
@@ -118,27 +130,29 @@ while not done:
 
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_LEFT):
-                x_coord = x_coord - 3
+                x_speed = -3
             if (event.key == pygame.K_RIGHT):
-                x_coord = x_coord + 3
+                x_speed = 3
             if (event.key == pygame.K_UP):
-                y_coord = y_coord - 5
+                y_speed = -3
             if (event.key == pygame.K_DOWN):
-                y_coord = y_coord + 5
+                y_speed = 3
 
             
         if event.type == pygame.KEYUP:
             if (event.key == pygame.K_LEFT):
-                x_coord = x_coord + 0
+                x_speed=0
             if (event.key == pygame.K_RIGHT):
-                x_coord = x_coord + 0
+                x_speed=0
             if (event.key == pygame.K_UP):
-                y_coord = y_coord + 0
+                y_speed=0
             if (event.key == pygame.K_DOWN):
-                y_coord = y_coord + 0        
+                y_speed=0       
 
     # --- Game logic should go here
     all_sprites_group.update()
+    my_evader.x_speed=x_speed
+    my_evader.y_speed=y_speed
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -149,7 +163,7 @@ while not done:
     screen.fill(WHITE)
  
     # --- Drawing code should go here
-    pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
+    #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
     all_sprites_group.draw(screen)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
