@@ -17,6 +17,9 @@ screen = pygame.display.set_mode(Size)
 
 FPS = 30
 
+
+
+
 pygame.display.set_caption("Evasion")
 #Set the mouse cursor to invisble so it doesn't get in the way of the game
 pygame.mouse.set_visible(False)
@@ -109,7 +112,7 @@ all_sprites_group = pygame.sprite.Group()
 
 enemynumber = 25
 for x in range (enemynumber):
-    my_enemy = Enemy(BLACK, 10, 10, 10)
+    my_enemy = Enemy(BLACK, 10, 10, 5)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
@@ -153,6 +156,7 @@ while not done:
     all_sprites_group.update()
     my_evader.x_speed=x_speed
     my_evader.y_speed=y_speed
+    evader_hit_group = pygame.sprite.spritecollide(Evader, my_enemy, True)
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -160,7 +164,7 @@ while not done:
  
     # If you want a background image, replace this clear with blit'ing the
     # background image.
-    screen.fill(WHITE)
+    screen.fill(GREEN)
  
     # --- Drawing code should go here
     #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
