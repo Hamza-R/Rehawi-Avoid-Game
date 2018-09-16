@@ -16,7 +16,7 @@ screen = pygame.display.set_mode(Size)
 
 FPS = 30
 
-pygame.display.set_caption("My Game")
+pygame.display.set_caption("Evasion")
 #Set the mouse cursor to invisble so it doesn't get in the way of the game
 pygame.mouse.set_visible(False)
 
@@ -28,13 +28,13 @@ clock = pygame.time.Clock()
 
 #Setting up of constants
 
-enemyminsize = 10
-enemyminsize = 40
-enemyminspeed = 1
-enemymaxspeed = 8
-enemyspawnrate = 6
-
-powerupspawnrate = 0
+##enemyminsize = 10
+##enemyminsize = 40
+##enemyminspeed = 1
+##enemymaxspeed = 8
+##enemyspawnrate = 6
+##
+##powerupspawnrate = 0
 
 ##playerx_speed = 0
 ##playery_speed = 0
@@ -42,30 +42,72 @@ powerupspawnrate = 0
 x_coord = 350
 y_coord = 490
 
+
+
 class Enemy(pygame.sprite.Sprite):
+
     def __init__(self, color, width, height, speed):
         super().__init__()
-        self.speed = speed
+
+        self.speed_x = 0
+        self.speed_y = speed
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
 
+    def update(self):
+        self.rect.x = self.rect.x + self.speed_x
+        self.rect.y = self.rect.y + self.speed_y
+        if self.rect.y > 500:
+            self.reset_pos()
+
+    def reset_pos(self):
+         self.rect.x = random.randrange (0,680)
+         self.rect.y=0
+
+         
+class Evader(pygame.sprite.Sprite):
+
+    def __init__ (self, color, width, height):
+        super().__init__()
+        
+        self.image = pygame.Surface([width,height])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.x_speed = 0
+        self.y_speed = 0
+        self.rect.x = 345
+        self.rect.y = 490
+
+
+
+    def get_X(self):
+         return self.rect.x
+
+    def update(self):
+        if self.rect.x < 0:
+            self.rect.x = 0
+        elif self.rect.x > 690:
+            self.rect.x = 690
+        else:
+            self.rect.x = self.rect.x + x_speed
+    
 enemy_group = pygame.sprite.Group()
 #List of all sprites
 all_sprites_group = pygame.sprite.Group()
 
 enemynumber = 25
 for x in range (enemynumber):
-    my_enemy = Enemy(BLACK, 10, 10, 5)
+    my_enemy = Enemy(BLACK, 10, 10, 10)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
-
-def update(self):
-    self.rect.y = self.rect.y + self.speed
-
+##
+##def update(self):
+##    self.rect.y = self.rect.y + self.speed
+##
 
 # -------- Main Program Loop -----------
 while not done:
