@@ -9,6 +9,8 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
+TEXTCOLOUR = (255, 255, 255)
+
 pygame.init()
 
 #Setting width and height of screen
@@ -17,10 +19,37 @@ screen = pygame.display.set_mode(Size)
 
 FPS = 30
 
+#Method to draw any text to our screen
+def drawText(text, font, surface, x, y):
+
+    textobject = font.render(text, 1, TEXTCOLOUR)
+    textrect = textobject.get_rect()
+    textrect.topleft = (x, y)
+    surface.blit(textobject, textrect)
+
+    
+#Font Choice
+font = pygame.font.SysFont(None, 30)
+
+
+#Press Key to stare game - main menu still needs to be created
+def PressKeyToStart():
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                done = True
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE: # pressing escape quits
+                    done = True
+                return
+            
+#Text for main menu of game
+drawText('Evasion', font, screen, (350), (250) ) # X pos/Y pos of Evasion text
+drawText('Press a key to start.', font, screen, (350) , (270) ) #X pos/Y pos of rest text
+pygame.display.update()
+PressKeyToStart()
 
         
-
-
 pygame.display.set_caption("Evasion")
 #Set the mouse cursor to invisble so it doesn't get in the way of the game
 pygame.mouse.set_visible(False)
