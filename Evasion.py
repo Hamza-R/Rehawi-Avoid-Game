@@ -44,8 +44,8 @@ def PressKeyToStart():
                 return
             
 #Text for main menu of game
-drawText('Evasion', font, screen, (350), (250) ) # X pos/Y pos of Evasion text
-drawText('Press a key to start.', font, screen, (350) , (270) ) #X pos/Y pos of rest text
+drawText('Evasion', font, screen, (345), (250) ) # X pos/Y pos of Evasion text
+drawText('Press a key to start.', font, screen, (345) , (270) ) #X pos/Y pos of rest text
 pygame.display.update()
 PressKeyToStart()
 
@@ -78,6 +78,8 @@ y_coord = 490
 
 x_speed = 0
 y_speed = 0
+
+#Score = 0
 
 
 
@@ -135,7 +137,20 @@ class Evader(pygame.sprite.Sprite):
         else:
             self.rect.x = self.rect.x + x_speed
             self.rect.y = self.rect.y + y_speed
-    
+
+##class Powerup(pygame.sprite.Sprite):
+##
+##    def __init__ (self, color, width, height):
+##        super().__init__()
+##
+##        self.image = pygame.Surface
+##        self.image.fill(color)
+##        self.rect = self.image.get_rect()
+##        self.rect.x = random.randrange(0, 600)
+##        self.rect.y = random.randrange(0, 400)
+
+
+        
 enemy_group = pygame.sprite.Group()
 #List of all sprites
 all_sprites_group = pygame.sprite.Group()
@@ -180,8 +195,11 @@ while not done:
             if (event.key == pygame.K_UP):
                 y_speed=0
             if (event.key == pygame.K_DOWN):
-                y_speed=0       
+                y_speed=0
 
+        drawText("Score", font, screen, (600), (50))
+        pygame.display.update()
+        
     # --- Game logic should go here
     all_sprites_group.update()
     my_evader.x_speed=x_speed
@@ -201,7 +219,7 @@ while not done:
     all_sprites_group.draw(screen)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
- 
+    
     # --- Limit to 60 frames per second 
     clock.tick(60)
  
