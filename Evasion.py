@@ -138,6 +138,19 @@ class Evader(pygame.sprite.Sprite):
             self.rect.x = self.rect.x + x_speed
             self.rect.y = self.rect.y + y_speed
 
+
+
+##class Coins(pygame.sprite.Sprite):
+##
+##    def __init__ (self, color, width, height):
+##        super().__init__()
+##
+##        self.image = pygame.Surface
+##        self.image.fill(color)
+##        self.rect = self.image.get_rect()
+##        self.rect.x = random.randrange(0, 600)
+##        self.rect.y = random.randrange(0, 400)
+##        
 ##class Powerup(pygame.sprite.Sprite):
 ##
 ##    def __init__ (self, color, width, height):
@@ -212,7 +225,7 @@ while not done:
  
     # If you want a background image, replace this clear with blit'ing the
     # background image.
-    screen.fill(GREEN)
+    screen.fill(WHITE)
  
     # --- Drawing code should go here
     #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
@@ -246,6 +259,14 @@ pygame.quit()
 ##            
 ##        if event.type == pygame.KEYUP:
 ##            if event.key == pygame.K_LEFT:
+##                playerx_speed=0
+##            if event.key == pygame.K_RIGHT:
+##                playerx_speed=0
+##            if event.key == pygame.K_UP:
+##                playery_speed = 0
+##            if event.key == pygame.K_DOWN:
+##                playery_speed = 0 
+
 ##                playerx_speed=0
 ##            if event.key == pygame.K_RIGHT:
 ##                playerx_speed=0
