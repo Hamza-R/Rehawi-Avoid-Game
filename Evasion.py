@@ -8,6 +8,9 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BLUE = (30, 144,255)
+PINK = (255, 20, 147)
+GOLD = (218, 165, 32) #CoinColour
 
 TEXTCOLOUR = (255, 255, 255)
 
@@ -151,7 +154,7 @@ class Evader(pygame.sprite.Sprite):
 ##        self.rect.x = random.randrange(0, 600)
 ##        self.rect.y = random.randrange(0, 400)
 ##        
-##class Powerup(pygame.sprite.Sprite):
+##class Power_up(pygame.sprite.Sprite):
 ##
 ##    def __init__ (self, color, width, height):
 ##        super().__init__()
@@ -162,14 +165,27 @@ class Evader(pygame.sprite.Sprite):
 ##        self.rect.x = random.randrange(0, 600)
 ##        self.rect.y = random.randrange(0, 400)
 
-
+##class Power_up_Bullet(Power_up):
+##    def __init__(self):
+##        super().__init__()
+##        self.color =RED
+##        
+##class Power_up_Invunerability(Power_up):
+##    def __init__(self):
+##        super().__init__()
+##        self.color = PINK
+##
+##class Power_up_SpeedUp(Power_up):
+##    def __init__(self):
+##        super().__init__()
+##        self.color = BLUE
         
 enemy_group = pygame.sprite.Group()
 #List of all sprites
 all_sprites_group = pygame.sprite.Group()
 
-enemynumber = 25
-for x in range (enemynumber):
+enemy_number = 25
+for x in range (enemy_number):
     my_enemy = Enemy(BLACK, 10, 10, 5)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
