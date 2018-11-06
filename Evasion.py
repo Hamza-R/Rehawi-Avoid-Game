@@ -9,6 +9,7 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (30, 144,255)
+DBLUE = (72, 61, 139)
 PINK = (255, 20, 147)
 GOLD = (218, 165, 32) #CoinColour
 
@@ -226,8 +227,7 @@ while not done:
             if (event.key == pygame.K_DOWN):
                 y_speed=0
 
-        drawText("Score", font, screen, (600), (50))
-        pygame.display.update()
+
         
     # --- Game logic should go here
     all_sprites_group.update()
@@ -241,11 +241,13 @@ while not done:
  
     # If you want a background image, replace this clear with blit'ing the
     # background image.
-    screen.fill(WHITE)
+    screen.fill(DBLUE)
  
     # --- Drawing code should go here
     #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
     all_sprites_group.draw(screen)
+    drawText("Score", font, screen, (600), (50))
+        
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
     
