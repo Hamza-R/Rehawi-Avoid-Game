@@ -195,6 +195,8 @@ my_evader = Evader(RED, 10, 10)
 all_sprites_group.add (my_evader)
 
 
+
+
 ##def update(self):
 ##    self.rect.y = self.rect.y + self.speed
 
@@ -233,7 +235,10 @@ while not done:
     all_sprites_group.update()
     my_evader.x_speed=x_speed
     my_evader.y_speed=y_speed
-    #evader_hit_group = pygame.sprite.spritecollide(Evader, my_enemy, True)
+
+
+    player_hit_group = pygame.sprite.spritecollide(my_evader, enemy_group, True)
+    
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
