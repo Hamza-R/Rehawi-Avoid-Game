@@ -84,6 +84,7 @@ x_speed = 0
 y_speed = 0
 
 #Score = 0
+ammo =50
 
 
 
@@ -141,6 +142,32 @@ class Evader(pygame.sprite.Sprite):
         else:
             self.rect.x = self.rect.x + x_speed
             self.rect.y = self.rect.y + y_speed
+
+    def shoot_bullet(self):
+        if ammo > 0 and spacebar == True:
+            
+            my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x, my_evader.rect.y)
+            all_sprites_group.add(my_bullet)
+
+    
+            
+            
+
+class Bullet(pygame.sprite.Sprite):
+
+    def __init__ (self, color, width, height, yspeed, xposition, yposition):
+        super().__init__()
+
+        self.image = pygame.Surface([width,height])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.rect.x = xposition
+        self.rect.y = yposition
+        self.yspeed = -5
+
+    def update(self):
+        self.rect.y = self.rect.y + self.yspeed
+       
 
 
 
@@ -217,6 +244,9 @@ while not done:
                 y_speed = -3
             if (event.key == pygame.K_DOWN):
                 y_speed = 3
+            if (event.key == pygame.K_SPACE):
+                spacebar = True
+                Evader.shoot_bullet(Bullet)
 
             
         if event.type == pygame.KEYUP:
@@ -228,6 +258,9 @@ while not done:
                 y_speed=0
             if (event.key == pygame.K_DOWN):
                 y_speed=0
+            if (event.key == pygame.K_SPACE):
+                spacebar = False
+               
 
 
         
@@ -296,4 +329,4 @@ pygame.quit()
 ##            if event.key == pygame.K_UP:
 ##                playery_speed = 0
 ##            if event.key == pygame.K_DOWN:
-##                playery_speed = 0 
+##                playery_speed = 0 c
