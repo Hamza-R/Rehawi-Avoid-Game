@@ -146,7 +146,7 @@ class Evader(pygame.sprite.Sprite):
     def shoot_bullet(self):
         if ammo > 0 and spacebar == True:
 
-            my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x, my_evader.rect.y)
+            my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x +2.   5, my_evader.rect.y)
             all_sprites_group.add(my_bullet)
             
             
