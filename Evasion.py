@@ -83,7 +83,7 @@ y_coord = 490
 x_speed = 0
 y_speed = 0
 
-#Score = 0
+score = 0
 ammo =50
 
 
@@ -145,9 +145,11 @@ class Evader(pygame.sprite.Sprite):
 
     def shoot_bullet(self):
         if ammo > 0 and spacebar == True:
-            
+
             my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x, my_evader.rect.y)
             all_sprites_group.add(my_bullet)
+            
+            
 
     
             
@@ -269,8 +271,9 @@ while not done:
     my_evader.x_speed=x_speed
     my_evader.y_speed=y_speed
 
-
+    score = score + 1
     player_hit_group = pygame.sprite.spritecollide(my_evader, enemy_group, True)
+#
     
     # --- Screen-clearing code goes here
  
@@ -284,7 +287,8 @@ while not done:
     # --- Drawing code should go here
     #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
     all_sprites_group.draw(screen)
-    drawText("Score", font, screen, (600), (50))
+    aScore = "Score: %s" %(score)
+    drawText(aScore, font, screen, (580), (50))
         
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
