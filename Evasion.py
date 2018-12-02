@@ -21,7 +21,7 @@ pygame.init()
 Size = (700, 500)
 screen = pygame.display.set_mode(Size)
 
-FPS = 30
+FPS = 60
 
 #Method to draw any text to our screen
 def drawText(text, font, surface, x, y):
@@ -29,7 +29,7 @@ def drawText(text, font, surface, x, y):
     textobject = font.render(text, 1, TEXTCOLOUR)
     textrect = textobject.get_rect()
     textrect.topleft = (x, y)
-    surface.blit(textobject, textrect)
+    surface.blit(textobject, textrect) 
 
     
 #Font Choice
@@ -46,6 +46,8 @@ def PressKeyToStart():
                 if event.key == K_ESCAPE: # pressing escape quits
                     done = True
                 return
+
+
             
 #Text for main menu of game
 drawText('Evasion', font, screen, (345), (250) ) # X pos/Y pos of Evasion text
@@ -71,13 +73,14 @@ x_speed = 0
 y_speed = 0
 
 score = 0
+scoreincrease = False
 ammo = 50
-gameove = False
+gameover = False
 
 
 class Enemy(pygame.sprite.Sprite):
 
-    def __init__(self, color, width, height, speed,evader):
+    def __init__(self, color, width, height, speed,evader, gameover):
         super().__init__()
 
         self.speed_x = 0
@@ -88,14 +91,20 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
         self.evader = evader
+        self.gameover = gameover
 
     def update(self):
         self.rect.x = self.rect.x + self.speed_x
         self.rect.y = self.rect.y + self.speed_y
         if self.rect.y > 500:
             self.reset_pos()
-        sprite_collide_list = pygame.sprite.spritecollide(self, self.evader,True)
 
+        sprite_collide_list = pygame.sprite.spritecollide(self, self.evader,True)
+        for x in sprite_collide_list:  
+            print("playercollide")
+            gameover = True
+            
+        
     def reset_pos(self):
          self.rect.x = random.randrange (0,680)
          self.rect.y=0
@@ -153,7 +162,9 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.rect.y = self.rect.y + self.yspeed
         sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy,True)
-
+        for x in sprite_collide_list: 
+            print("enemyshot")            
+            scoreincrease = True        
 
 #PowerUp class area
 class Power_up(pygame.sprite.Sprite):
@@ -193,7 +204,7 @@ all_sprites_group = pygame.sprite.Group()
 
 enemy_number = 25
 for x in range (enemy_number):
-    my_enemy = Enemy(BLACK, 10, 10, 5, evader_group)
+    my_enemy = Enemy(BLACK, 10, 10, 5, evader_group,gameover)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
@@ -244,11 +255,23 @@ while not done:
     all_sprites_group.update()
     my_evader.x_speed=x_speed
     my_evader.y_speed=y_speed
+ 
+    score = score + 1 
 
-    score = score + 1
-    
+    if scoreincrease == True:
+        score = score + 50
+    else:
+        score = score 
 
-    
+    if gameover == True:
+        score = score
+
+        drawText("GAME OVER", font, screen,(320), (25))
+        aScore = "Score: %s" %(score)
+        drawText(aScore, font, screen, (350), (50))
+        screen.fill(BLACK)
+        pygame.display.update()
+        
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -270,7 +293,13 @@ while not done:
     pygame.display.flip()
     
     # --- Limit to 60 frames per second 
-    clock.tick(60)
+    clock.tick(FPS)
  
 # Close the window and quit.
 pygame.quit()
+
+
+
+
+#SET SCORE AS CLASS METHOD FOR SCORE INCREASE INSTEAD OF VARIABLE AS VARIABLE IS IMMUTABLE ETC ETC
+#PERHAPS EVEN SET OVERALL AS GAME CLASS TO TRACK ALL OF THE GAMES IMPORTANT VARIABLES AND ETC
