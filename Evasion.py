@@ -23,7 +23,7 @@ screen = pygame.display.set_mode(Size)
 
 FPS = 60
 
-#Method to draw any text to our screen
+#Method to draw any text to our screen                         
 def drawText(text, font, surface, x, y):
 
     textobject = font.render(text, 1, TEXTCOLOUR)
@@ -80,7 +80,7 @@ gameover = False
 
 class Enemy(pygame.sprite.Sprite):
 
-    def __init__(self, color, width, height, speed,evader, gameover):
+    def __init__(self, color, width, height, speed,Evader, gameover):
         super().__init__()
 
         self.speed_x = 0
@@ -90,7 +90,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
-        self.evader = evader
+        self.evader = Evader
         self.gameover = gameover
 
     def update(self):
@@ -148,28 +148,29 @@ class Evader(pygame.sprite.Sprite):
             
 class Bullet(pygame.sprite.Sprite):
 
-    def __init__ (self, color, width, height, yspeed, xposition, yposition, enemy):
+    def __init__ (self, color, width, height, yspeed, xposition, yposition, Enemy):
         super().__init__()
 
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
-        self.enemy = enemy
+        self.enemy = Enemy
         self.rect = self.image.get_rect()
         self.rect.x = xposition
         self.rect.y = yposition
         self.yspeed = -5
+     
 
     def update(self):
         self.rect.y = self.rect.y + self.yspeed
         sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy,True)
         for x in sprite_collide_list: 
             print("enemyshot")            
-            scoreincrease = True        
+           
 
 #PowerUp class area
 class Power_up(pygame.sprite.Sprite):
 
-    def __init__ (self, color, width, height):
+    def __init__ (self, color, width, height, Evader, Enemy):
         super().__init__()
 
         self.image = pygame.Surface
@@ -177,6 +178,8 @@ class Power_up(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
+        self.evader = Evader
+        self.enemy = Enemy  
 
 class Coins(pygame.sprite.Sprite):
 
@@ -252,6 +255,7 @@ while not done:
 
          
     # --- Game logic should go here
+    
     all_sprites_group.update()
     my_evader.x_speed=x_speed
     my_evader.y_speed=y_speed
