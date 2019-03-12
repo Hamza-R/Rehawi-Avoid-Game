@@ -48,39 +48,11 @@ def PressKeyToStart():
                 return
 
 
-            
-#Text for main menu of game
-drawText('Evasion', font, screen, (345), (250) ) # X pos/Y pos of Evasion text
-drawText('Press a key to start.', font, screen, (345) , (270) ) #X pos/Y pos of rest text
-pygame.display.update()
-PressKeyToStart()
-
-        
-pygame.display.set_caption("Evasion")
-#Set the mouse cursor to invisble so it doesn't get in the way of the game
-pygame.mouse.set_visible(False)
-
-#Continuously run until the user clicks the close button
-done = False
-
-#Manage speed of screen updates
-clock = pygame.time.Clock()
-
-x_coord = 350
-y_coord = 490
-
-x_speed = 0
-y_speed = 0
-
-score = 0
-scoreincrease = False
-ammo = 50
-gameover = False
 
 
 class Enemy(pygame.sprite.Sprite):
 
-    def __init__(self, color, width, height, speed,Evader, gameover):
+    def __init__(self, color, width, height, speed):
         super().__init__()
 
         self.speed_x = 0
@@ -90,8 +62,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
-        self.evader = Evader
-        self.gameover = gameover
+
 
     def update(self):
         self.rect.x = self.rect.x + self.speed_x
@@ -99,10 +70,6 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.y > 500:
             self.reset_pos()
 
-        sprite_collide_list = pygame.sprite.spritecollide(self, self.evader,True)
-        for x in sprite_collide_list:  
-            print("playercollide")
-            gameover = True
             
         
     def reset_pos(self):
@@ -112,7 +79,7 @@ class Enemy(pygame.sprite.Sprite):
          
 class Evader(pygame.sprite.Sprite):
 
-    def __init__ (self, color, width, height):
+    def __init__ (self, color, width, height, gameover, enemy_grp):
         super().__init__()
         
         self.image = pygame.Surface([width,height])
@@ -122,6 +89,8 @@ class Evader(pygame.sprite.Sprite):
         self.y_speed = 0
         self.rect.x = 345
         self.rect.y = 490
+        self.enemy_grp = enemy_grp
+        self.gameover = gameover
 
 
     def get_X(self):
@@ -140,11 +109,19 @@ class Evader(pygame.sprite.Sprite):
             self.rect.x = self.rect.x + x_speed
             self.rect.y = self.rect.y + y_speed
 
+        sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy_grp, False)
+        for x in sprite_collide_list:  
+##            print("playercollide")
+            self.gameover = True
+##            print(self.gameover)
+
+
     def shoot_bullet(self):
-        if spacebar == True:
+        if spacebar == True and my_evader.gameover == False:
 
             my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x +2.5, my_evader.rect.y, enemy_group)
             all_sprites_group.add(my_bullet)
+##            print("BULLETSHOT")
             
 class Bullet(pygame.sprite.Sprite):
 
@@ -200,6 +177,36 @@ class Power_up_SpeedUp(Power_up):
         super().__init__()
 
 
+            
+#Text for main menu of game
+drawText('Evasion', font, screen, (345), (250) ) # X pos/Y pos of Evasion text
+drawText('Press a key to start.', font, screen, (345) , (270) ) #X pos/Y pos of rest text
+pygame.display.update()
+PressKeyToStart()
+
+        
+pygame.display.set_caption("Evasion")
+#Set the mouse cursor to invisble so it doesn't get in the way of the game
+##pygame.mouse.set_visible(False)
+
+#Continuously run until the user clicks the close button
+done = False
+
+#Manage speed of screen updates
+clock = pygame.time.Clock()
+
+x_coord = 350
+y_coord = 490
+
+x_speed = 0
+y_speed = 0
+
+score = 0
+scoreincrease = False
+ammo = 50
+
+
+
 evader_group =pygame.sprite.Group()        
 enemy_group = pygame.sprite.Group()
 #List of all sprites
@@ -207,14 +214,15 @@ all_sprites_group = pygame.sprite.Group()
 
 enemy_number = 25
 for x in range (enemy_number):
-    my_enemy = Enemy(BLACK, 10, 10, 5, evader_group,gameover)
+    my_enemy = Enemy(BLACK, 10, 10, 5)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
-my_evader = Evader(RED, 10, 10)
+my_evader = Evader(RED, 10, 10, False, enemy_group)
+##print(my_evader.gameover)
 all_sprites_group.add (my_evader)
 evader_group.add(my_evader)
-
+done = False
 
 # -------- Main Program Loop -----------
 while not done:
@@ -259,22 +267,18 @@ while not done:
     all_sprites_group.update()
     my_evader.x_speed=x_speed
     my_evader.y_speed=y_speed
- 
-    score = score + 1 
 
-    if scoreincrease == True:
-        score = score + 50
+
+    if my_evader.gameover == False:
+        score = score + 1 
     else:
-        score = score 
+        score = score + 0
 
-    if gameover == True:
-        score = score
 
-        drawText("GAME OVER", font, screen,(320), (25))
-        aScore = "Score: %s" %(score)
-        drawText(aScore, font, screen, (350), (50))
-        screen.fill(BLACK)
-        pygame.display.update()
+##    if scoreincrease == True:
+##        score = score + 50
+
+
         
     # --- Screen-clearing code goes here
  
@@ -287,11 +291,20 @@ while not done:
  
     # --- Drawing code should go here
     #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
-    all_sprites_group.draw(screen)
-    aScore = "Score: %s" %(score)
-    drawText(aScore, font, screen, (565), (5))
-    aAmmo = "Ammo: %s" %(ammo)
-    drawText (aAmmo, font, screen, (565), (25))
+##    print("Decision" + str(my_evader.gameover))
+    if my_evader.gameover == True:
+        screen.fill(BLACK)
+        drawText("GAME OVER", font, screen,(320), (25))
+        aScore = "Score: %s" %(score)
+        drawText(aScore, font, screen, (350), (50))
+    
+        pygame.display.update()
+    else:
+        all_sprites_group.draw(screen)
+        aScore = "Score: %s" %(score)
+        drawText(aScore, font, screen, (565), (5))
+        aAmmo = "Ammo: %s" %(ammo)
+        drawText (aAmmo, font, screen, (565), (25))
         
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
