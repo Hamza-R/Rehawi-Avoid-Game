@@ -294,10 +294,16 @@ while not done:
 ##    print("Decision" + str(my_evader.gameover))
     if my_evader.gameover == True:
         screen.fill(BLACK)
-        drawText("GAME OVER", font, screen,(320), (25))
+        drawText("GAME OVER", font, screen,(320), (250))
         aScore = "Score: %s" %(score)
-        drawText(aScore, font, screen, (350), (50))
-    
+        drawText(aScore, font, screen, (350), (270))
+        drawText("Press R to play again", font, screen, (300), (290))
+        if event.type == pygame.KEYDOWN:
+            if (event.key == pygame.K_r):
+                my_evader.gameover = False
+                score = 0
+                ammo = 50
+            
         pygame.display.update()
     else:
         all_sprites_group.draw(screen)
@@ -314,9 +320,6 @@ while not done:
  
 # Close the window and quit.
 pygame.quit()
-
-
-
 
 #SET SCORE AS CLASS METHOD FOR SCORE INCREASE INSTEAD OF VARIABLE AS VARIABLE IS IMMUTABLE ETC ETC
 #PERHAPS EVEN SET OVERALL AS GAME CLASS TO TRACK ALL OF THE GAMES IMPORTANT VARIABLES AND ETC
