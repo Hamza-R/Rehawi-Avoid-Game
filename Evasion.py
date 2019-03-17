@@ -22,6 +22,7 @@ Size = (700, 500)
 screen = pygame.display.set_mode(Size)
 
 FPS = 60
+mainmenu = True
 
 #Method to draw any text to our screen                         
 def drawText(text, font, surface, x, y):
@@ -43,9 +44,16 @@ def PressKeyToStart():
             if event.type == QUIT:
                 done = True
             if event.type == KEYDOWN:
-                if event.key == K_ESCAPE: # pressing escape quits
-                    done = True
+                done = True
                 return
+
+def Reset():
+    if True:
+                my_evader.gameover = False
+                score = 0
+                ammo = 50
+                my_evader.rect.x = 345
+                my_evader.rect.y = 490
 
 
 
@@ -158,7 +166,7 @@ class Power_up(pygame.sprite.Sprite):
         self.evader = Evader
         self.enemy = Enemy  
 
-class Coins(pygame.sprite.Sprite):
+class Power_up_coins(Power_up):
 
     def __init__(self):
         super().__init__()
@@ -179,12 +187,13 @@ class Power_up_SpeedUp(Power_up):
 
             
 #Text for main menu of game
-drawText('Evasion', font, screen, (345), (250) ) # X pos/Y pos of Evasion text
-drawText('Press a key to start.', font, screen, (345) , (270) ) #X pos/Y pos of rest text
-pygame.display.update()
-PressKeyToStart()
-
-        
+if mainmenu == True:
+    drawText('Evasion', font, screen, (345), (250) ) # X pos/Y pos of Evasion text
+    drawText('Press a key to start.', font, screen, (345) , (270) ) #X pos/Y pos of rest text
+    pygame.display.update()
+    PressKeyToStart()
+else:
+    done = True
 pygame.display.set_caption("Evasion")
 #Set the mouse cursor to invisble so it doesn't get in the way of the game
 ##pygame.mouse.set_visible(False)
@@ -223,6 +232,7 @@ my_evader = Evader(RED, 10, 10, False, enemy_group)
 all_sprites_group.add (my_evader)
 evader_group.add(my_evader)
 done = False
+
 
 # -------- Main Program Loop -----------
 while not done:
@@ -292,19 +302,32 @@ while not done:
     # --- Drawing code should go here
     #pygame.draw.rect(screen, BLACK, [x_coord,y_coord,10,10])
 ##    print("Decision" + str(my_evader.gameover))
+
     if my_evader.gameover == True:
         screen.fill(BLACK)
         drawText("GAME OVER", font, screen,(320), (250))
         aScore = "Score: %s" %(score)
         drawText(aScore, font, screen, (350), (270))
         drawText("Press R to play again", font, screen, (300), (290))
+        drawText("Press M to return to the main menu", font, screen, (270), (310))
+
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_r):
-                my_evader.gameover = False
-                score = 0
-                ammo = 50
+                Reset()
+##                my_evader.gameover = False
+##                score = 0
+##                ammo = 50
+##                my_evader.rect.x = 345
+##                my_evader.rect.y = 490
+##                enemy_number = 
             
-        pygame.display.update()
+
+##        if (event.key == pygame.K_m):
+##            mainmenu = True
+##    
+##            print (mainmenu)
+##        pygame.display.update()
+        
     else:
         all_sprites_group.draw(screen)
         aScore = "Score: %s" %(score)
