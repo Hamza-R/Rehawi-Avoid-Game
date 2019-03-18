@@ -47,6 +47,7 @@ def PressKeyToStart():
                 done = True
                 return
 
+#Method that resets the game and its feature's when you press R to play again
 def Reset():
     if True:
                 my_evader.gameover = False
@@ -87,7 +88,7 @@ class Enemy(pygame.sprite.Sprite):
          
 class Evader(pygame.sprite.Sprite):
 
-    def __init__ (self, color, width, height, gameover, enemy_grp):
+    def __init__ (self, color, width, height, ammo, gameover, enemy_grp, Power_up_Bullet):
         super().__init__()
         
         self.image = pygame.Surface([width,height])
@@ -97,8 +98,10 @@ class Evader(pygame.sprite.Sprite):
         self.y_speed = 0
         self.rect.x = 345
         self.rect.y = 490
+        self.ammo = 10
         self.enemy_grp = enemy_grp
         self.gameover = gameover
+        self.Power_up_Bullet = Power_up_Bullet
 
 
     def get_X(self):
@@ -122,6 +125,9 @@ class Evader(pygame.sprite.Sprite):
 ##            print("playercollide")
             self.gameover = True
 ##            print(self.gameover)
+        sprite_collide_list = pygame.sprite.spritecollide(self, my_Power_up_bullet, True)
+        for x in sprite_collide_list:
+            my_evader.ammo += 25
 
 
     def shoot_bullet(self):
@@ -153,37 +159,48 @@ class Bullet(pygame.sprite.Sprite):
            
 
 #PowerUp class area
-class Power_up(pygame.sprite.Sprite):
+##class Power_up(pygame.sprite.Sprite):
+##
+##    def __init__ (self, color, width, height, Evader, Enemy):
+##        super().__init__()
+##
+##        self.image = pygame.Surface
+##        self.image.fill(color)
+##        self.rect = self.image.get_rect()
+##        self.rect.x = random.randrange(0, 600)
+##        self.rect.y = random.randrange(0, 400)
+##        self.evader = Evader
+##        self.enemy = Enemy  
+##
+##class Power_up_coins(Power_up):
+##
+##    def __init__(self):
+##        super().__init__()
+        
+class Power_up_Bullet(pygame.sprite.Sprite):
+    
+    def __init__(self, color, width, height):
+        super().__init__()       
 
-    def __init__ (self, color, width, height, Evader, Enemy):
-        super().__init__()
-
-        self.image = pygame.Surface
-        self.image.fill(color)
+        self.image = pygame.Surface([width,height])
         self.rect = self.image.get_rect()
+        self.image.fill(color)
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
-        self.evader = Evader
-        self.enemy = Enemy  
 
-class Power_up_coins(Power_up):
 
-    def __init__(self):
-        super().__init__()
-        
-class Power_up_Bullet(Power_up):
-    def __init__(self):
-        super().__init__()
-        
-        
-class Power_up_Invunerability(Power_up):
-    def __init__(self):
-        super().__init__()
-        
-class Power_up_SpeedUp(Power_up):
-    def __init__(self):
-        super().__init__()
-
+##                
+##class Power_up_Invunerability(Power_up):
+##    def __init__(self):
+##        super().__init__()
+##        
+##class Power_up_SpeedUp(Power_up):
+##    def __init__(self):
+##        super().__init__()
+##
+##class Power_up_Shield(Power_up):
+##    def __init__(self):
+##        super().__init__()
 
             
 #Text for main menu of game
@@ -195,8 +212,6 @@ if mainmenu == True:
 else:
     done = True
 pygame.display.set_caption("Evasion")
-#Set the mouse cursor to invisble so it doesn't get in the way of the game
-##pygame.mouse.set_visible(False)
 
 #Continuously run until the user clicks the close button
 done = False
@@ -212,28 +227,34 @@ y_speed = 0
 
 score = 0
 scoreincrease = False
-ammo = 50
+#ammo = 50
 
 
 
+power_up_group = pygame.sprite.Group()
 evader_group =pygame.sprite.Group()        
 enemy_group = pygame.sprite.Group()
 #List of all sprites
 all_sprites_group = pygame.sprite.Group()
 
-enemy_number = 25
+enemy_number = 5
 for x in range (enemy_number):
-    my_enemy = Enemy(BLACK, 10, 10, 5)
+    my_enemy = Enemy(BLACK, 10, 10, 1)
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
-my_evader = Evader(RED, 10, 10, False, enemy_group)
+my_evader = Evader(RED, 10, 10, 0, False, enemy_group, Power_up_Bullet)
 ##print(my_evader.gameover)
 all_sprites_group.add (my_evader)
 evader_group.add(my_evader)
 done = False
 
-
+num = 5
+for x in range (num):
+    my_Power_up_bullet = Power_up_Bullet(PINK, 7, 7)
+    power_up_group.add(my_Power_up_bullet)
+    all_sprites_group.add(my_Power_up_bullet)
+    
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -251,9 +272,9 @@ while not done:
             if (event.key == pygame.K_DOWN):
                 y_speed = 3
             if (event.key == pygame.K_SPACE):
-                if ammo > 0:
+                if my_evader.ammo > 0:
                     spacebar = True
-                    ammo -= 1
+                    my_evader.ammo -= 1
                     Evader.shoot_bullet(Bullet)
 
             
@@ -314,16 +335,10 @@ while not done:
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_r):
                 Reset()
-##                my_evader.gameover = False
-##                score = 0
-##                ammo = 50
-##                my_evader.rect.x = 345
-##                my_evader.rect.y = 490
-##                enemy_number = 
             
 
 ##        if (event.key == pygame.K_m):
-##            mainmenu = True
+##          mainmenu = True
 ##    
 ##            print (mainmenu)
 ##        pygame.display.update()
@@ -332,7 +347,7 @@ while not done:
         all_sprites_group.draw(screen)
         aScore = "Score: %s" %(score)
         drawText(aScore, font, screen, (565), (5))
-        aAmmo = "Ammo: %s" %(ammo)
+        aAmmo = "Ammo: %s" %(my_evader.ammo)
         drawText (aAmmo, font, screen, (565), (25))
         
     # --- Go ahead and update the screen with what we've drawn.
