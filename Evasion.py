@@ -3,7 +3,11 @@ from pygame.locals import *
 import random
 import math
 
-  #Defining some colours
+f = open("highscore.txt","rt")
+data = f.read()
+f.close()
+
+#Defining some colours
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -125,7 +129,7 @@ class Evader(pygame.sprite.Sprite):
 ##            print("playercollide")
             self.gameover = True
 ##            print(self.gameover)
-        sprite_collide_list = pygame.sprite.spritecollide(self, my_Power_up_bullet, True)
+        sprite_collide_list = pygame.sprite.spritecollide(self, power_up_group, True)
         for x in sprite_collide_list:
             my_evader.ammo += 25
 
@@ -159,34 +163,28 @@ class Bullet(pygame.sprite.Sprite):
            
 
 #PowerUp class area
-##class Power_up(pygame.sprite.Sprite):
-##
-##    def __init__ (self, color, width, height, Evader, Enemy):
-##        super().__init__()
-##
-##        self.image = pygame.Surface
-##        self.image.fill(color)
-##        self.rect = self.image.get_rect()
-##        self.rect.x = random.randrange(0, 600)
-##        self.rect.y = random.randrange(0, 400)
-##        self.evader = Evader
-##        self.enemy = Enemy  
+class Power_up(pygame.sprite.Sprite):
+
+    def __init__ (self, color, width, height):
+        super().__init__()
+
+        self.image = pygame.Surface([width,height])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(0, 600)
+        self.rect.y = random.randrange(0, 400)
+
 ##
 ##class Power_up_coins(Power_up):
 ##
 ##    def __init__(self):
 ##        super().__init__()
         
-class Power_up_Bullet(pygame.sprite.Sprite):
+class Power_up_Bullet(Power_up):
     
     def __init__(self, color, width, height):
-        super().__init__()       
+        super().__init__(color, width, height)       
 
-        self.image = pygame.Surface([width,height])
-        self.rect = self.image.get_rect()
-        self.image.fill(color)
-        self.rect.x = random.randrange(0, 600)
-        self.rect.y = random.randrange(0, 400)
 
 
 ##                
@@ -331,6 +329,16 @@ while not done:
         drawText(aScore, font, screen, (350), (270))
         drawText("Press R to play again", font, screen, (300), (290))
         drawText("Press M to return to the main menu", font, screen, (270), (310))
+
+        highscore = int(data)
+        if score > highscore:
+            highscore = score
+            data = str(highscore)
+            f = open("highscore.txt","wt")
+            f.write(data)
+            f.close()
+        hs = "HighScore %s" %(highscore)
+        drawText(hs, font , screen, 300,350)
 
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_r):
