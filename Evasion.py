@@ -5,6 +5,7 @@ import math
 
 f = open("highscore.txt","rt")
 data = f.read()
+ingameHS = int(data)
 f.close()
 
 #Defining some colours
@@ -329,6 +330,7 @@ while not done:
         drawText(aScore, font, screen, (350), (270))
         drawText("Press R to play again", font, screen, (300), (290))
         drawText("Press M to return to the main menu", font, screen, (270), (310))
+        
 
         highscore = int(data)
         if score > highscore:
@@ -357,6 +359,8 @@ while not done:
         drawText(aScore, font, screen, (565), (5))
         aAmmo = "Ammo: %s" %(my_evader.ammo)
         drawText (aAmmo, font, screen, (565), (25))
+        HS = "HighScore %s" %(ingameHS)
+        drawText(HS, font , screen, 545, (45))
         
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
