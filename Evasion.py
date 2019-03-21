@@ -175,31 +175,28 @@ class Power_up(pygame.sprite.Sprite):
         self.rect.x = random.randrange(0, 600)
         self.rect.y = random.randrange(0, 400)
 
-##
-##class Power_up_coins(Power_up):
-##
-##    def __init__(self):
-##        super().__init__()
+
+class Power_up_coins(Power_up):
+
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
         
 class Power_up_Bullet(Power_up):
     
     def __init__(self, color, width, height):
         super().__init__(color, width, height)       
+                
+class Power_up_Invunerability(Power_up):
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
+        
+class Power_up_Speed(Power_up):
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
 
-
-
-##                
-##class Power_up_Invunerability(Power_up):
-##    def __init__(self):
-##        super().__init__()
-##        
-##class Power_up_SpeedUp(Power_up):
-##    def __init__(self):
-##        super().__init__()
-##
-##class Power_up_Shield(Power_up):
-##    def __init__(self):
-##        super().__init__()
+class Power_up_Shield(Power_up):
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
 
             
 #Text for main menu of game
@@ -228,11 +225,13 @@ score = 0
 scoreincrease = False
 #ammo = 50
 
-
-
 power_up_group = pygame.sprite.Group()
+
+
 evader_group =pygame.sprite.Group()        
+
 enemy_group = pygame.sprite.Group()
+
 #List of all sprites
 all_sprites_group = pygame.sprite.Group()
 
@@ -243,7 +242,6 @@ for x in range (enemy_number):
     all_sprites_group.add (my_enemy)
 
 my_evader = Evader(RED, 10, 10, 0, False, enemy_group, Power_up_Bullet)
-##print(my_evader.gameover)
 all_sprites_group.add (my_evader)
 evader_group.add(my_evader)
 done = False
@@ -253,7 +251,23 @@ for x in range (num):
     my_Power_up_bullet = Power_up_Bullet(PINK, 7, 7)
     power_up_group.add(my_Power_up_bullet)
     all_sprites_group.add(my_Power_up_bullet)
-    
+
+    my_coin = Power_up_coins(GOLD, 7, 7)
+    power_up_group.add(my_coin)
+    all_sprites_group.add(my_coin)
+
+    my_Power_up_Speed = Power_up_Speed(GREEN, 7 ,7)
+    power_up_group.add (my_Power_up_Speed)
+    all_sprites_group.add(my_Power_up_Speed)
+
+    my_Power_up_Shield = Power_up_Shield(BLUE, 7, 7)
+    power_up_group.add(my_Power_up_Shield)
+    all_sprites_group.add(my_Power_up_Shield)
+
+    my_Power_up_Invunerability = Power_up_Invunerability (WHITE, 7, 7)
+    power_up_group.add(my_Power_up_Invunerability)
+    all_sprites_group.add(my_Power_up_Invunerability)
+                        
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
