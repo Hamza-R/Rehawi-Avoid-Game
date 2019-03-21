@@ -57,7 +57,7 @@ def Reset():
     if True:
                 my_evader.gameover = False
                 score = 0
-                ammo = 50
+                my_evader.ammo = 10
                 my_evader.rect.x = 345
                 my_evader.rect.y = 490
 
@@ -241,7 +241,7 @@ for x in range (enemy_number):
     enemy_group.add(my_enemy)
     all_sprites_group.add (my_enemy)
 
-my_evader = Evader(RED, 10, 10, 0, False, enemy_group, Power_up_Bullet)
+my_evader = Evader(RED, 10, 10, 10, False, enemy_group, Power_up_Bullet)
 all_sprites_group.add (my_evader)
 evader_group.add(my_evader)
 done = False
