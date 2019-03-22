@@ -56,6 +56,10 @@ def PressKeyToStart():
 def Reset():
     if True:
                 my_evader.gameover = False
+<<<<<<< HEAD
+=======
+                score = 0
+>>>>>>> parent of 0b5b986... Wrapped entire code in procedure called main
                 my_evader.ammo = 10
                 my_evader.rect.x = 345
                 my_evader.rect.y = 490
@@ -129,6 +133,7 @@ class Evader(pygame.sprite.Sprite):
 ##            print("playercollide")
             self.gameover = True
 ##            print(self.gameover)
+<<<<<<< HEAD
             
         sprite_collide_list = pygame.sprite.spritecollide(self, power_up_group, True)
         for x in sprite_collide_list:
@@ -142,6 +147,20 @@ class Evader(pygame.sprite.Sprite):
             all_sprites_group.add(my_bullet)
 ##            print("BULLETSHOT")
             
+=======
+        sprite_collide_list = pygame.sprite.spritecollide(self, power_up_group, True)
+        for x in sprite_collide_list:
+            my_evader.ammo += 25
+
+
+    def shoot_bullet(self):
+        if spacebar == True and my_evader.gameover == False:
+
+            my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x +2.5, my_evader.rect.y, enemy_group)
+            all_sprites_group.add(my_bullet)
+##            print("BULLETSHOT")
+            
+>>>>>>> parent of 0b5b986... Wrapped entire code in procedure called main
 class Bullet(pygame.sprite.Sprite):
 
     def __init__ (self, color, width, height, yspeed, xposition, yposition, Enemy):
@@ -358,9 +377,13 @@ while not done:
 
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_r):
+<<<<<<< HEAD
                 score = 0
                 Reset()
                 
+=======
+                Reset()
+>>>>>>> parent of 0b5b986... Wrapped entire code in procedure called main
             
 
 ##        if (event.key == pygame.K_m):
