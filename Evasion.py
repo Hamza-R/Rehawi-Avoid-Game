@@ -3,10 +3,7 @@ from pygame.locals import *
 import random
 import math
 
-f = open("highscore.txt","rt")
-data = f.read()
-ingameHS = int(data)
-f.close()
+
 
 #Defining some colours
 BLACK = (0, 0, 0)
@@ -23,6 +20,11 @@ TEXTCOLOUR = (255, 255, 255)
 pygame.init()
 
 def main():
+
+    f = open("highscore.txt","rt")
+    data = f.read()
+    ingameHS = int(data)
+    f.close()
     
     #Setting width and height of screen
     Size = (700, 500)
@@ -376,15 +378,16 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_r):
                     score = 0
-                    main()
+                    Reset()
                     
                 
 
-    ##        if (event.key == pygame.K_m):
-    ##          mainmenu = True
-    ##    
-    ##            print (mainmenu)
-    ##        pygame.display.update()
+            if (event.key == pygame.K_m):
+                score = 0
+                main()
+        
+             
+            pygame.display.update()
             
         else:
             all_sprites_group.draw(screen)
