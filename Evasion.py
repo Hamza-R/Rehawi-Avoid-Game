@@ -38,13 +38,24 @@ def main():
     mainmenu = True
     
     #Help screen which can ba accessed on main menu
-    def help():
+    def Help():
         
         
         print("entering help")
         screen.fill(BLACK)
         drawText("Help", font, screen, (340), (10))
-        drawText("HELP INSTRUCTIONS", font, screen, (10), (60))
+        
+        drawText("The aim of the game is to dodge the enemies and survive for as", font, screen, (10), (60))
+        drawText("long as possible.You can do this in multiple ways.", font, screen, (10), (80))
+        drawText("To move use the arrow keys.You can move in any direction", font, screen, (10), (100))
+        drawText("you desire. The player also can collect power ups,", font, screen, (10), (120))
+        drawText("these powerups will help you survive.There are four different", font, screen, (10), (140))
+        drawText("powerups: A coin that gives you an extra fifty score,", font, screen, (10), (160))
+        drawText("a powerup that will #increase your speed for a limited time,", font, screen, (10), (180))
+        drawText("an ammo refill, to shoot when you have ammo press the spacebar, and", font, screen, (10), (200))
+        drawText("a shield powerup that will destroy any enemies that collide with it", font, screen, (10), (220))
+        drawText("preventing you from dying", font, screen, (10), (240))        
+        
         drawText("Press m to return to the Main Menu", font , screen, (270), (430))
         drawText('Press p to Play', font, screen, (270) , (450) ) #X pos/Y pos of rest text
         drawText('Press s for High Score', font, screen, (270) , (470) )
@@ -91,7 +102,7 @@ def main():
                         done = True
                         return
                     elif (event.key == pygame.K_h):
-                        help()
+                        Help()
                     elif (event.key == pygame.K_s):
                         Highscore()
                     elif (event.key == pygame.K_m):
@@ -191,7 +202,7 @@ def main():
             self.rect = self.image.get_rect()
             self.x_speed = 0
             self.y_speed = 0
-            self.rect.x = my_evader.rect.x + (x_speed * my_evader.behaviour.speed)
+            self.rect.x = my_evader.rect.x + (x_speed * my_evader.behaviour.speed) -10
             self.rect.y = (my_evader.rect.y +(y_speed * my_evader.behaviour.speed))-15
             self.active = False
             #self.behaviour = EvaderBehaviour()
@@ -308,11 +319,6 @@ def main():
                 if type(x) is Power_up_Bullet:
                     my_evader.ammo += 25
 
-                elif type(x) is Power_up_coins:
-                    print("Score ")
-
-                elif type(x) is Power_up_Shield:
-                    print("Draw ")
 
                 x.apply_power(self)
                 print(sprite_collide_list)
@@ -335,6 +341,8 @@ def main():
             self.rect.x = xposition
             self.rect.y = yposition
             self.yspeed = -5
+            print("Score ")
+
 
         def update(self):
             self.rect.y = self.rect.y + self.yspeed
@@ -367,19 +375,16 @@ def main():
             super().__init__(color, width, height)
 ##        # Creating interface for applying a power up to our Evader.
 ##        # We are actually implementing something called a Visitor pattern
-##        #def apply_power(self, evader):
-##        #    pass
         def apply_power(self, evader):
             # Repeat this to other power ups and extend 
             # behaviour class with relevant attributes
             # So we simply use inheritence to override 
             # default behaviour in subclasses.
-            print("50 Coins Applied")
+            print("50 Score Applied")
             global score
             score += 50
             print ("score " ,score)
             return score
-            #evader.behaviour = CoinUpBehaviour()
 
     class Power_up_Bullet(Power_up):
         
@@ -394,10 +399,6 @@ def main():
             super().__init__(color, width, height)
 
         def apply_power(self, evader):
-            # Repeat this to other power ups and extend 
-            # behaviour class with relevant attributes
-            # So we simply use inheritence to override 
-            # default behaviour in subclasses.
             print("SPEED APPLIED")
             evader.behaviour = SpeedUpBehaviour()
 
@@ -411,7 +412,7 @@ def main():
             global my_evader_shield
             global enemy_group
             if not my_evader_shield:
-                my_evader_shield = Shield(BLUE, 10, 10,enemy_group)
+                my_evader_shield = Shield(BLUE, 30, 4,enemy_group)
                 all_sprites_group.add (my_evader_shield)
                 evader_group.add(my_evader_shield)
                 
@@ -497,7 +498,7 @@ def main():
             counter = counter * current_minute
             counter = int(counter)
 
-            print("Conter" , counter)
+            print("Counter" , counter)
             for x in range(counter):
                 my_enemy = Enemy(BLACK, 10, 10, current_minute)
                 enemy_group.add(my_enemy)
