@@ -238,8 +238,6 @@ def main():
                 print("print collide: new enemy created")
                 ##CREATE NEW ENEMY
                 my_enemy = Enemy(BLACK, 10, 10, 1)
-                my_enemy.rect.x = random.randrange(0, 600)
-                my_enemy.rect.y = random.randrange(0, 250)
                 enemy_group.add(my_enemy)
                 all_sprites_group.add (my_enemy)
 
@@ -249,8 +247,6 @@ def main():
                 self.gameover = False
                 ##CREATE NEW ENEMY
                 my_enemy = Enemy(BLACK, 10, 10, 1)
-                my_enemy.rect.x = random.randrange(0, 600)
-                my_enemy.rect.y = random.randrange(0, 250)
                 enemy_group.add(my_enemy)
                 all_sprites_group.add (my_enemy)
                 
@@ -380,13 +376,8 @@ def main():
 
         def __init__(self, color, width, height):
             super().__init__(color, width, height)
-##        # Creating interface for applying a power up to our Evader.
-##        # We are actually implementing something called a Visitor pattern
-        def apply_power(self, evader):
-            # Repeat this to other power ups and extend 
-            # behaviour class with relevant attributes
-            # So we simply use inheritence to override 
-            # default behaviour in subclasses.
+
+        def apply_power(self, evader):.
             print("50 Score Applied")
             global score
             score += 50
