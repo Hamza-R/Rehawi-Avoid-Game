@@ -51,7 +51,7 @@ def main():
         drawText("you desire. The player also can collect power ups,", font, screen, (10), (120))
         drawText("these powerups will help you survive.There are four different", font, screen, (10), (140))
         drawText("powerups: A coin that gives you an extra fifty score,", font, screen, (10), (160))
-        drawText("a powerup that will #increase your speed for a limited time,", font, screen, (10), (180))
+        drawText("a powerup that will increase your speed for a limited time,", font, screen, (10), (180))
         drawText("an ammo refill, to shoot when you have ammo press the spacebar, and", font, screen, (10), (200))
         drawText("a shield powerup that will destroy any enemies that collide with it", font, screen, (10), (220))
         drawText("preventing you from dying", font, screen, (10), (240))        
@@ -116,6 +116,9 @@ def main():
                     my_evader.ammo = 10
                     my_evader.rect.x = 345
                     my_evader.rect.y = 490
+                    my_evader.behaviour = EvaderBehaviour()
+                    my_evader.sheild = None
+                    current_powerup  = None
 
 
 
@@ -124,7 +127,7 @@ def main():
 
         def __init__(self, color, width, height, speed):
             super().__init__()
-            print("I was created")
+##            print("I was created")
             self.speed_x = 0
             self.speed_y = speed
             self.image = pygame.Surface([width,height])
@@ -235,6 +238,8 @@ def main():
                 print("print collide: new enemy created")
                 ##CREATE NEW ENEMY
                 my_enemy = Enemy(BLACK, 10, 10, 1)
+                my_enemy.rect.x = random.randrange(0, 600)
+                my_enemy.rect.y = random.randrange(0, 250)
                 enemy_group.add(my_enemy)
                 all_sprites_group.add (my_enemy)
 
@@ -244,6 +249,8 @@ def main():
                 self.gameover = False
                 ##CREATE NEW ENEMY
                 my_enemy = Enemy(BLACK, 10, 10, 1)
+                my_enemy.rect.x = random.randrange(0, 600)
+                my_enemy.rect.y = random.randrange(0, 250)
                 enemy_group.add(my_enemy)
                 all_sprites_group.add (my_enemy)
                 
@@ -317,7 +324,7 @@ def main():
             sprite_collide_list = pygame.sprite.spritecollide(self, power_up_group, True)
             for x in sprite_collide_list:   
                 if type(x) is Power_up_Bullet:
-                    my_evader.ammo += 25
+                    my_evader.ammo += 10
 
 
                 x.apply_power(self)
@@ -421,7 +428,7 @@ def main():
 
 
     def create_powerup():
-        #change to (1, 10) if you want only 50% chance of powerup appearing.
+        #change to (1, 8) if you want only 50% chance of powerup appearing.
         rand = random.randint(1, 4)
         #rand = 4
         powerup = None
@@ -487,7 +494,7 @@ def main():
     time_started = time.time()
     last_minute = 0
     handle_spacebar = False
-    counter = 1
+    counter = 5
 
     current_powerup = None
     while not done:
