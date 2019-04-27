@@ -377,7 +377,7 @@ def main():
         def __init__(self, color, width, height):
             super().__init__(color, width, height)
 
-        def apply_power(self, evader):.
+        def apply_power(self, evader):
             print("50 Score Applied")
             global score
             score += 50
