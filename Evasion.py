@@ -14,17 +14,21 @@ DBLUE = (72, 61, 139)
 PINK = (255, 20, 147)
 GOLD = (218, 165, 32) #CoinColour
 
+#Defining Other key variables
+
 TEXTCOLOUR = (255, 255, 255)
-
 POWERUP_SECONDS = 10
-
 score = 0
 my_evader_shield = None
 enemy_group = pygame.sprite.Group()
+
+#initialisting pygame
 pygame.init()
 
+#Creating procedure called main which we can call whenever we want to restart the game
 def main():
 
+    #Opening Highscore File to read the current highest score
     f = open("highscore.txt","rt")
     data = f.read()
     ingameHS = int(data)
@@ -45,6 +49,7 @@ def main():
         screen.fill(BLACK)
         drawText("Help", font, screen, (340), (10))
         
+        #Help Instructions
         drawText("The aim of the game is to dodge the enemies and survive for as", font, screen, (10), (60))
         drawText("long as possible.You can do this in multiple ways.", font, screen, (10), (80))
         drawText("To move use the arrow keys.You can move in any direction", font, screen, (10), (100))
@@ -56,6 +61,7 @@ def main():
         drawText("a shield powerup that will destroy any enemies that collide with it", font, screen, (10), (220))
         drawText("preventing you from dying", font, screen, (10), (240))        
         
+        #Text to navigate to other screens from the help screen
         drawText("Press m to return to the Main Menu", font , screen, (270), (430))
         drawText('Press p to Play', font, screen, (270) , (450) ) #X pos/Y pos of rest text
         drawText('Press s for High Score', font, screen, (270) , (470) )
@@ -90,7 +96,7 @@ def main():
     font = pygame.font.SysFont(None, 30)
 
 
-    #Press Key to stare game - main menu still needs to be created
+    #Press Key to stare game
     def PressKeyToStart():
         while True:
             for event in pygame.event.get():
@@ -122,12 +128,11 @@ def main():
 
 
 
-
+    #The enemy class
     class Enemy(pygame.sprite.Sprite):
 
         def __init__(self, color, width, height, speed):
             super().__init__()
-##            print("I was created")
             self.speed_x = 0
             self.speed_y = speed
             self.image = pygame.Surface([width,height])
@@ -144,11 +149,13 @@ def main():
                 self.reset_pos()
 
                 
-            
+         #Method to reset the enemies if they aren't killed and go past the bottom of the screen
+         #They respawn at the top
         def reset_pos(self):
              self.rect.x = random.randrange (0,680)
              self.rect.y=0
 
+    #Class which defines our default way the evader behaviours when no powerups are applied
     class EvaderBehaviour():
         """
         Our default evader behaviour
@@ -161,6 +168,8 @@ def main():
             #Default behaviour never expires
             return False
 
+    #This class defines the behaivour when the speed up powerup has been collected
+    #It also inherits from the class EvaderBehavior
     class SpeedUpBehaviour(EvaderBehaviour):
         """
         Our speed powerup
@@ -174,6 +183,8 @@ def main():
             active_period = time.time() - self.started
             return active_period > POWERUP_SECONDS
 
+    #This class defines the behaivour when the shield powerup has been collected
+    #It also inherits from the class EvaderBehavior
     class ShieldUpBehaviour(EvaderBehaviour):
         """
         Our Shield Up powerup
@@ -187,7 +198,7 @@ def main():
             return active_period > POWERUP_SECONDS         
 
 
-    ##Shield Sprite
+    #The class which defines what the actual shield object will look like
     class Shield(pygame.sprite.Sprite):
         def __init__ (self, color, width, height, enemy_group):
             super().__init__()
@@ -197,28 +208,19 @@ def main():
             self.image.fill(color)
             self.enemy_grp = enemy_group
 
-            print("Shield",enemy_group, self.enemy_grp)
-            #for images
-            #asurf = pygame.image.load(os.path.join('data', 'bla.png'))
-            #self.image = assurf
-
             self.rect = self.image.get_rect()
             self.x_speed = 0
             self.y_speed = 0
             self.rect.x = my_evader.rect.x + (x_speed * my_evader.behaviour.speed) -10
             self.rect.y = (my_evader.rect.y +(y_speed * my_evader.behaviour.speed))-15
             self.active = False
-            #self.behaviour = EvaderBehaviour()
-
-
-            
+         
         def get_X(self):
              return self.rect.x
 
+        #Method to stop the shield from moving out of the playable area if the player itself tries to get out of bounds
         def update(self):
-                
-                
-            #print("Shield Update",self.rect.x,self.rect.y )
+
             if self.rect.x < 0:
                 self.rect.x = 0
             if self.rect.y < 0:
@@ -231,12 +233,13 @@ def main():
                 self.rect.x = self.rect.x + (x_speed * my_evader.behaviour.speed)
                 self.rect.y = self.rect.y +(y_speed * my_evader.behaviour.speed) 
 
+            #Collision detection - If the shield collides with any enemies they are deleted
             col=sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy_grp, True)
 
             for y in col:
             # Draw rects around the collided enemies.
                 print("print collide: new enemy created")
-                ##CREATE NEW ENEMY
+                #CREATE NEW ENEMY
                 my_enemy = Enemy(BLACK, 10, 10, 1)
                 enemy_group.add(my_enemy)
                 all_sprites_group.add (my_enemy)
@@ -250,17 +253,12 @@ def main():
                 enemy_group.add(my_enemy)
                 all_sprites_group.add (my_enemy)
                 
-
-                
-##            sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy_grp, False)
-##            for x in sprite_collide_list:              
-##                self.gameover = True
-
+            #Check to see if the powerup has expired so we can remove it
             def is_expired(self):
                 active_period = time.time() - self.started
                 return active_period > POWERUP_SECONDS
 
-        
+    #The player class   
     class Evader(pygame.sprite.Sprite):
 
         def __init__ (self, color, width, height, ammo, gameover, enemy_group, Power_up_Bullet):
@@ -268,10 +266,6 @@ def main():
             
             self.image = pygame.Surface([width,height])
             self.image.fill(color)
-            #for images
-            #asurf = pygame.image.load(os.path.join('data', 'bla.png'))
-            #self.image = assurf
-
             self.rect = self.image.get_rect()
             self.x_speed = 0
             self.y_speed = 0
@@ -286,6 +280,7 @@ def main():
         def get_X(self):
              return self.rect.x
 
+        #Update method which first deals with powerup effects
         def update(self):
 
             if self.behaviour.is_expired():
@@ -297,7 +292,7 @@ def main():
                     my_evader_shield.kill()
                     my_evader_shield = None
                     
-
+            #Resetting the players coordinates if they try to go out of bounds
             if self.rect.x < 0:
                 self.rect.x = 0
             if self.rect.y < 0:
@@ -311,12 +306,13 @@ def main():
                 self.rect.y = self.rect.y + (y_speed * self.behaviour.speed)
 
             
-
+            #Collision management - if the player collides with an enemy the gameover boolean becomes true
+            #The game over screen is then displayed
             sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy_grp, False)
             for x in sprite_collide_list:              
                 self.gameover = True
 
-
+            #Collision management - if the player collides with a powerup the powerup is deleted and its effect applied
             sprite_collide_list = pygame.sprite.spritecollide(self, power_up_group, True)
             for x in sprite_collide_list:   
                 if type(x) is Power_up_Bullet:
@@ -326,12 +322,14 @@ def main():
                 x.apply_power(self)
                 print(sprite_collide_list)
 
+        #Method to shoot bullets - check is done elsewhere which affects the value of spacebar
         def shoot_bullet(self):
             if spacebar == True and my_evader.gameover == False:
 
                 my_bullet = Bullet (PINK, 5, 5, 5, my_evader.rect.x +2.5, my_evader.rect.y, enemy_group)
                 all_sprites_group.add(my_bullet)
-                
+
+    #Class which defines the bullet objects             
     class Bullet(pygame.sprite.Sprite):
 
         def __init__ (self, color, width, height, yspeed, xposition, yposition, Enemy):
@@ -344,9 +342,10 @@ def main():
             self.rect.x = xposition
             self.rect.y = yposition
             self.yspeed = -5
-            print("Score ")
 
 
+        #Updating the position of the bullets as they travel up the screen when shot
+        #Collision Management - If a bullet collides with an enemy the enemy is deleted
         def update(self):
             self.rect.y = self.rect.y + self.yspeed
             sprite_collide_list = pygame.sprite.spritecollide(self, self.enemy,True)
@@ -355,6 +354,7 @@ def main():
                
 
     #PowerUp class area
+    #Template PowerUp which all powerups will inherit from
     class Power_up(pygame.sprite.Sprite):
 
         def __init__ (self, color, width, height):
@@ -371,12 +371,13 @@ def main():
         def is_expired(self):
             # Just keep track how long something has lived for
             return time.time() - self.started_at > POWERUP_SECONDS
-        
+    #Class for coin - although not really a powerup it functions in the same way    
     class Power_up_coins(Power_up):
 
         def __init__(self, color, width, height):
             super().__init__(color, width, height)
-
+        #Creating interface for applying powerups to the evader
+        #Implementing a visitor pattern
         def apply_power(self, evader):
             print("50 Score Applied")
             global score
@@ -384,6 +385,11 @@ def main():
             print ("score " ,score)
             return score
 
+        #We then repeat this to other powerups
+        #Extend it to the behaviour classes with relevant attriutes
+        #And then use polymorphism to override default behaviour in the subclasses
+
+    #Class for the bullet powerup item (that when collected gives you ammo)
     class Power_up_Bullet(Power_up):
         
         def __init__(self, color, width, height):
@@ -391,7 +397,8 @@ def main():
 
         def apply_power(self, evader):
             pass        
-        
+
+    #PowerUp that when collected speeds the player up  
     class Power_up_Speed(Power_up):
         def __init__(self, color, width, height):
             super().__init__(color, width, height)
@@ -400,6 +407,7 @@ def main():
             print("SPEED APPLIED")
             evader.behaviour = SpeedUpBehaviour()
 
+    #PowerUp when collected instantiates the shield object
     class Power_up_Shield(Power_up):
         def __init__(self, color, width, height):
             super().__init__(color, width, height)
@@ -417,7 +425,7 @@ def main():
             evader.behaviour = ShieldUpBehaviour()
 
 
-
+    #Method for random powerup creation
     def create_powerup():
         #change to (1, 8) if you want only 50% chance of powerup appearing.
         rand = random.randint(1, 4)
@@ -459,39 +467,39 @@ def main():
     y_speed = 0
 
     global score
- 
-    power_up_group = pygame.sprite.Group()
-
-    evader_group =pygame.sprite.Group()        
-
-    
 
     #List of all sprites
-    all_sprites_group = pygame.sprite.Group()
+    all_sprites_group = pygame.sprite.Group() 
+    power_up_group = pygame.sprite.Group()
+    evader_group =pygame.sprite.Group()        
 
-    
+    #Spawning enemies    
     enemy_number = 15
     for x in range (enemy_number):
         my_enemy = Enemy(BLACK, 10, 10, 1)
         enemy_group.add(my_enemy)
         all_sprites_group.add (my_enemy)
 
+    #Instantiation of evader
     my_evader = Evader(RED, 10, 10, 10, False, enemy_group, Power_up_Bullet)
     all_sprites_group.add (my_evader)
     evader_group.add(my_evader)
     done = False
                      
     # -------- Main Program Loop -----------
+    #Tracking system of time
     time_started = time.time()
     last_minute = 0
     handle_spacebar = False
     counter = 5
 
+    #Tracking how long powerups last
     current_powerup = None
     while not done:
         elapsed_seconds = time.time() - time_started
         current_minute = elapsed_seconds // 60
 
+        #Spawning new enemies after a certain amount of time has passed
         if current_minute > last_minute:
             counter = counter * current_minute
             counter = int(counter)
@@ -503,6 +511,7 @@ def main():
                 all_sprites_group.add (my_enemy)
                 last_minute = current_minute
 
+        #Dealing with powerups and checking if they have expired
         if current_powerup:
             #Check if powerup needs to be killed
             if current_powerup.is_expired():
@@ -519,6 +528,7 @@ def main():
             if event.type == pygame.QUIT:
                 done = True
 
+            #Movement 
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_LEFT):
                     x_speed = -3
@@ -533,7 +543,9 @@ def main():
                         spacebar = True
                         my_evader.ammo -= 1
                         Evader.shoot_bullet(Bullet)
-
+                #As reference earlier spacebar will only be true if the player has ammo
+                #Otherwise they won't be able to shoot
+                
             
             if event.type == pygame.KEYUP:
                 if (event.key == pygame.K_LEFT):
@@ -547,22 +559,23 @@ def main():
                 if (event.key == pygame.K_SPACE):
                     spacebar = False
                     handle_spacebar = True
-                   
+                           
 
              
         # --- Game logic should go here
-        
+
+        #Updating all sprites
         all_sprites_group.update()
         my_evader.x_speed=x_speed
         my_evader.y_speed=y_speed
 
-        ### Shield
+        # Shield updating
         if my_evader_shield:
             all_sprites_group.update()
             my_evader_shield.x_speed=x_speed
             my_evader_shield.y_speed=y_speed
 
-
+        #When the game over is the score stops increasing as time passes this allows us to compare the final score to the highscore
         if my_evader.gameover == False:
             score = score + 1
         else:
@@ -580,7 +593,8 @@ def main():
         screen.fill(DBLUE)
      
         # --- Drawing code should go here
-        
+
+        #GameOver screen being displayed when gameover becomes true
         if my_evader.gameover == True:
             screen.fill(BLACK)
             drawText("GAME OVER", font, screen,(270), (10))
@@ -589,7 +603,7 @@ def main():
             drawText("Press m to return to the main menu", font, screen, (270), (450))
             drawText("Press r to play again", font, screen, (270), (470))
             
-
+            #Checking highscores. If the current score is greater we overrwrite the current value stored in the highscore.txt file
             highscore = int(data)
             if score > highscore:
                 highscore = score
@@ -600,16 +614,18 @@ def main():
             hs = "HighScore %s" %(highscore)
             drawText(hs, font , screen, (270),(250) )
 
+            #Event handling - If the player presses m (just like the text says above) they will return to the main menu
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_m):
                     score = 0
                     main()
 
+                #If player presses r key game will restart
                 if (event.key == pygame.K_r):
                     score = 0
                     Reset()
             
-            
+        #Drawing the heads up display    
         else:
             all_sprites_group.draw(screen)
             aScore = "Score: %s" %(score)
